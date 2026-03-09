@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jiu‑Jitsu · Acervo de finalizações</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+        }
+
+        body {
+            background: #1e2b2c; /* fundo escuro para destacar o conteúdo */
+            background: radial-gradient(circle at 10% 30%, #2c3d40, #121a1c);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* cartão principal */
+        .dojo-card {
+            max-width: 1300px;
+            width: 100%;
+            background: #e7dfcf;
+            background: linear-gradient(165deg, #f3ecdd 0%, #d9cdb2 100%);
+            border-radius: 60px 60px 40px 40px;
+            box-shadow: 0 30px 40px rgba(0, 0, 0, 0.6), 0 8px 20px #00000055;
+            border: 2px solid #ac9f86;
+            overflow: hidden;
+            backdrop-filter: blur(2px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ÁREA SUPERIOR (imagem esquerda + descrição direita) */
+        .showcase {
+            display: flex;
+            gap: 28px;
+            align-items: stretch;
+            padding: 30px 35px 20px 35px;
+            background: #1a2527;
+            background: linear-gradient(125deg, #1d2a2d, #142022);
+            border-bottom: 4px solid #c7a958;
+        }
+
+        .selected-figure {
+            flex: 0 0 300px;
+            height: 220px;
+            background: #0a1113;
+            border-radius: 32px;
+            border: 4px solid #e1c68b;
+            box-shadow: 0 12px 18px #00000080;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .selected-figure img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .selected-description {
+            flex: 1;
+            background: #2d3a3d;
+            border-radius: 32px;
+            padding: 24px 32px;
+            border-right: 6px solid #b69950;
+            box-shadow: inset 0 2px 8px #a68b4e55, 0 8px 0 #0f191b;
+        }
+
+        .selected-description h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #ffefcf;
+            text-shadow: 3px 3px 0 #1f2f33;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .selected-description .exec-text {
+            font-size: 1.18rem;
+            line-height: 1.5;
+            color: #f2e6d2;
+            margin-bottom: 16px;
+        }
+
+        .selected-description .dica {
+            background: #1f2f32;
+            padding: 14px 18px;
+            border-radius: 40px;
+            color: #ecdbaa;
+            font-style: italic;
+            border: 1px solid #c2a75c;
+            font-weight: 500;
+            display: inline-block;
+            box-shadow: inset 0 1px 4px #ffefb0;
+        }
+
+        /* CARROSSEL */
+        .carrossel-wrapper {
+            padding: 25px 25px 15px 25px;
+        }
+
+        .carrossel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .carrossel-header h3 {
+            font-size: 2rem;
+            background: #b69744;
+            padding: 8px 32px;
+            border-radius: 40px;
+            color: #152224;
+            font-weight: 800;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 0 #6a4f24;
+            border: 1px solid #ead3a0;
+        }
+
+        .contador {
+            background: #27393d;
+            color: #eedbaa;
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 1.3rem;
+            border: 1px solid #b49655;
+        }
+
+        .carrossel-container {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: visible;
+            padding: 16px 4px 24px 4px;
+            scroll-behavior: smooth;
+            border-radius: 48px;
+            background: #b7aa8f40;
+            backdrop-filter: blur(4px);
+            border: 1px solid #bcaf8d;
+        }
+
+        .carrossel-track {
+            display: flex;
+            gap: 25px;
+            width: max-content;
+            padding: 0 20px;
+        }
+
+        .tech-card {
+            width: 210px;
+            height: 180px;
+            background: #eddfc7;
+            background: radial-gradient(circle at 70% 20%, #fff2dd, #ddccac);
+            border-radius: 38px;
+            padding: 15px 8px 8px 8px;
+            box-shadow: 0 18px 20px -10px #2b2b1c, 0 0 0 2px #6b5d44;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid #7e6f4f;
+        }
+
+        .tech-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: #c8a451;
+            box-shadow: 0 28px 28px -12px #131313;
+        }
+
+        .tech-card.selected-card {
+            border: 6px solid #f5cf7b;
+            background: #fbf3e0;
+            box-shadow: 0 0 0 3px #9f8b56;
+        }
+
+        .card-img {
+            width: 150px;
+            height: 105px;
+            border-radius: 28px;
+            background: #a08d68;
+            overflow: hidden;
+            border: 3px solid #5a4d31;
+            box-shadow: inset 0 0 10px #392e1e;
+        }
+
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-name {
+            margin-top: 12px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #1b2629;
+            text-shadow: 1px 1px 0 #b9a477;
+        }
+
+        /* RODAPÉ */
+        .footer {
+            background: #171f21;
+            color: #ddcbaa;
+            padding: 22px 35px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 4px solid #ba9f5a;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        .footer .creditos {
+            display: flex;
+            gap: 40px;
+        }
+
+        .footer a {
+            color: #fad987;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 2px solid #a58643;
+        }
+
+        .footer a:hover {
+            color: #ffe19c;
+            border-color: #fad34f;
+        }
+
+        .footer .simbolo {
+            font-size: 1.6rem;
+            filter: drop-shadow(0 2px 4px black);
+        }
+
+        /* Ajuste responsivo */
+        @media (max-width: 800px) {
+            .showcase { flex-direction: column; }
+            .selected-figure { max-width: 100%; height: 200px; }
+            .footer { flex-direction: column; gap: 15px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dojo-card">
+        <!-- TOPO: imagem (esquerda) e descrição (direita) -->
+        <div class="showcase">
+            <div class="selected-figure" id="imgGrandeContainer">
+                <img id="imgGrande" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='220' viewBox='0 0 300 220'%3E%3Crect width='300' height='220' fill='%233d4d47'/%3E%3Ctext x='30' y='130' font-family='Arial' font-size='30' fill='%23eadbba' font-weight='bold'%3E🥋 KATA GATAME%3C/text%3E%3C/svg%3E" alt="finalização em destaque">
+            </div>
+            <div class="selected-description" id="descricaoBox">
+                <h2 id="tituloFinalizacao">Kata‑Gatame</h2>
+                <div class="exec-text" id="textoFinalizacao">Mantenha a cabeça do oponente presa entre o braço e o peito. Puxe a própria mão por baixo da nuca dele, enquanto aperta o cotovelo contra o pescoço. Cruze as pernas para estabilizar e comprima lateralmente.</div>
+                <div class="dica" id="dicaFinalizacao">👉 pressione o ombro contra o pescoço, quadris para frente</div>
+            </div>
+        </div>
+
+        <!-- CARROSSEL COM MUITAS FINALIZAÇÕES -->
+        <div class="carrossel-wrapper">
+            <div class="carrossel-header">
+                <h3>⚡ FINALIZAÇÕES</h3>
+                <span class="contador" id="totalTecnicas">24 técnicas</span>
+            </div>
+
+            <div class="carrossel-container" id="carrosselContainer">
+                <div class="carrossel-track" id="carrosselTrack">
+                    <!-- cards preenchidos via JS -->
+                </div>
+            </div>
+
+            <!-- leve indicação de rolagem -->
+            <div style="text-align: right; margin-top: 10px; color: #3f463b; font-weight: 600; opacity: 0.8;">
+                ⬅️ deslize para mais finalizações ➡️
+            </div>
+        </div>
+
+        <!-- RODAPÉ completo -->
+        <footer class="footer">
+            <div class="creditos">
+                <span>© 2025 · Jiu‑Jitsu Submissions</span>
+                <span>｜</span>
+                <span>Acervo de <strong>24 finalizações</strong></span>
+                <span>｜</span>
+                <span>Arte suave 🥋</span>
+            </div>
+            <div>
+                <a href="#">sobre o projeto</a> • <a href="#">técnicas</a> • <a href="#">instagram</a>
+            </div>
+            <div class="simbolo">
+                🥋⚡
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        (function() {
+            // ---------- BANCO DE DADOS COM 24 FINALIZAÇÕES ----------
+            const submissions = [
+                { 
+                    name: "Kata‑Gatame", 
+                    detail: "Mantenha a cabeça do oponente presa entre o braço e o peito. Puxe a própria mão por baixo da nuca dele, enquanto aperta o cotovelo contra o pescoço. Cruze as pernas para estabilizar e comprima lateralmente.",
+                    hint: "👉 pressione o ombro contra o pescoço, quadris para frente",
+                    bg: "#7d6843"
+                },
+                { 
+                    name: "Triângulo", 
+                    detail: "De guarda, prenda um braço e a cabeça do oponente entre suas coxas. Feche o triângulo cruzando o tornozelo atrás do joelho. Aperte puxando a cabeça para baixo e unindo os joelhos.",
+                    hint: "👉 mantenha o quadril elevado e pressione a perna de cima",
+                    bg: "#946b40"
+                },
+                { 
+                    name: "Mata‑Leão", 
+                    detail: "Por trás, encaixe um braço ao redor do pescoço, com a mão no ombro oposto. Coloque a outra mão atrás da cabeça e empurre-a para frente contra seu antebraço.",
+                    hint: "👉 evite cruzar os pés, mantenha o corpo colado",
+                    bg: "#6e5441"
+                },
+                { 
+                    name: "Kimura", 
+                    detail: "Segure o pulso do oponente com a mão oposta. Passe seu outro braço por baixo do braço dele e segure seu próprio pulso. Gire o braço dele para trás, como se fosse um soco reverso.",
+                    hint: "👉 controle o tronco para não deixar escapar",
+                    bg: "#7f603c"
+                },
+                { 
+                    name: "Armlock (Juji)", 
+                    detail: "A partir da montada ou guarda, isole um braço, cruze as pernas e estenda o cotovelo contra seu quadril. Hiperestenda o braço pressionando para cima.",
+                    hint: "👉 mantenha o polegar do oponente para cima",
+                    bg: "#816e4e"
+                },
+                { 
+                    name: "Omoplata", 
+                    detail: "Da guarda, jogue uma perna por cima do ombro do adversário. Gire o quadril e feche as pernas nas costas. Puxe o braço e incline para finalizar o ombro.",
+                    hint: "👉 sente‑se e mantenha a perna ativa",
+                    bg: "#967b52"
+                },
+                { 
+                    name: "Guilhotina", 
+                    detail: "Com a cabeça para baixo, envolva o pescoço do oponente com um braço, mão fechada. Pressione a cabeça dele contra seu peito e levante o cotovelo.",
+                    hint: "👉 aperte os joelhos para dentro se estiver de guarda",
+                    bg: "#7c623f"
+                },
+                { 
+                    name: "D'Arce (triângulo de braço)", 
+                    detail: "Quando o oponente tenta passar a guarda, enlace o pescoço e um braço com seus braços. Una as mãos e comprima as carótidas com o antebraço.",
+                    hint: "👉 mantenha o corpo alinhado por cima",
+                    bg: "#9a7f55"
+                },
+                { 
+                    name: "Pé‑de‑galo", 
+                    detail: "Controle o pé do adversário, gire o calcanhar para dentro e projete seu corpo para frente, alongando o tornozelo.",
+                    hint: "👉 use o cotovelo para travar a perna",
+                    bg: "#73603d"
+                },
+                { 
+                    name: "Chave de pé (estiramento)", 
+                    detail: "Com o pé do oponente sob axila, gire o calcanhar para fora enquanto empurra o peito do pé.",
+                    hint: "👉 mantenha o quadril próximo",
+                    bg: "#8b6d44"
+                },
+                { 
+                    name: "Ezequiel (manga)", 
+                    detail: "Na montada, encaixe um braço ao redor da cabeça e use a outra mão para pressionar o antebraço contra a garganta, como se fosse uma guilhotina de braço.",
+                    hint: "👉 gire o punho para obstruir a respiração",
+                    bg: "#705a38"
+                },
+                { 
+                    name: "Heel Hook (cruzada)", 
+                    detail: "Controle a perna adversária, prenda o pé sob axila e gire o calcanhar para fora com movimento de alavanca.",
+                    hint: "👉 muito cuidado, execute com controle",
+                    bg: "#9b875b"
+                },
+                { 
+                    name: "Americana (mão‑de‑vaca)", 
+                    detail: "Prenda o braço do oponente contra o solo, segure o punho e gire para fora, forçando o ombro.",
+                    hint: "👉 use o peso do tronco para pressionar",
+                    bg: "#7d613b"
+                },
+                { 
+                    name: "Batente (cinturão)", 
+                    detail: "Puxe o cinto do adversário ao redor do pescoço e aperte como se fosse um mata‑leão com alça.",
+                    hint: "👉 mantenha a cabeça baixa",
+                    bg: "#a28559"
+                },
+                { 
+                    name: "Gogoplata", 
+                    detail: "Da montada ou guarda alta, cruze a perna sobre o pescoço e puxe a cabeça contra sua canela. Una as mãos atrás da cabeça.",
+                    hint: "👉 flexione o pé para endurecer a canela",
+                    bg: "#6b563a"
+                },
+                { 
+                    name: "Twister (invertido)", 
+                    detail: "Enlace a cabeça por baixo do braço e gire o corpo, travando a coluna do oponente.",
+                    hint: "👉 aperte os quadris contra o ombro",
+                    bg: "#947d4e"
+                },
+                { 
+                    name: "Bate‑estaca (canoa)", 
+                    detail: "Com o pé adversário preso, levante o calcanhar e empurre a ponta do pé para baixo.",
+                    hint: "👉 use o antebraço como apoio",
+                    bg: "#896e40"
+                },
+                { 
+                    name: "Katagatame (variação)", 
+                    detail: "Similar ao Kata‑gatame, porém com o braço do oponente preso junto ao pescoço.",
+                    hint: "👉 aperte os ombros para dentro",
+                    bg: "#8f754a"
+                },
+                { 
+                    name: "Triângulo invertido", 
+                    detail: "Da guarda, puxe a cabeça para baixo e encaixe a perna oposta por cima, fechando o triângulo ao contrário.",
+                    hint: "👉 cruze o tornozelo com força",
+                    bg: "#8b7042"
+                },
+                { 
+                    name: "Mão de fada (lapel)", 
+                    detail: "Use a ponta da lapela para estrangular por trás do pescoço, puxando com as duas mãos.",
+                    hint: "👉 gire o punho para apertar",
+                    bg: "#775d38"
+                },
+                { 
+                    name: "Anaconda", 
+                    detail: "Similar ao d'arce, porém com o braço por cima do ombro, comprimindo o pescoço.",
+                    hint: "👉 role para o lado para aumentar pressão",
+                    bg: "#9a855b"
+                },
+                { 
+                    name: "Chave de braço (retada)", 
+                    detail: "De lado, prenda o braço entre as pernas e hiperestenda com ajuda do quadril.",
+                    hint: "👉 controle o ombro",
+                    bg: "#806d44"
+                },
+                { 
+                    name: "Pé‑no‑quadril (knee bar)", 
+                    detail: "Prenda a perna adversária, coloque o quadril próximo ao joelho e estenda a perna.",
+                    hint: "👉 mantenha o pé do oponente sob axila",
+                    bg: "#957d4f"
+                },
+                { 
+                    name: "Crucifixo", 
+                    detail: "Por trás, prenda os dois braços com as pernas e puxe a cabeça para trás.",
+                    hint: "👉 encaixe os pés no quadril",
+                    bg: "#836d3e"
+                }
+            ];
+
+            // atalhos DOM
+            const imgGrande = document.getElementById('imgGrande');
+            const titulo = document.getElementById('tituloFinalizacao');
+            const texto = document.getElementById('textoFinalizacao');
+            const dica = document.getElementById('dicaFinalizacao');
+            const track = document.getElementById('carrosselTrack');
+            const totalSpan = document.getElementById('totalTecnicas');
+
+            totalSpan.textContent = submissions.length + ' técnicas';
+
+            // função que gera svg com nome e cor de fundo
+            function criarSvgFinalizacao(nome, bgCor) {
+                return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='160' viewBox='0 0 250 160'%3E%3Crect width='250' height='160' fill='${bgCor.replace('#', '%23')}' /%3E%3Ctext x='25' y='95' font-family='Arial' font-size='26' fill='%23F5EBD0' font-weight='bold'%3E🥋 %3C/text%3E%3Ctext x='25' y='135' font-family='Arial' font-size='22' fill='%23FFF2D0'%3E${nome}%3C/text%3E%3C/svg%3E`;
+            }
+
+            // preenche carrossel
+            submissions.forEach((sub, index) => {
+                const card = document.createElement('div');
+                card.className = `tech-card ${index === 0 ? 'selected-card' : ''}`;
+                card.dataset.index = index;
+
+                const cardImgDiv = document.createElement('div');
+                cardImgDiv.className = 'card-img';
+                const img = document.createElement('img');
+                img.src = criarSvgFinalizacao(sub.name, sub.bg);
+                img.alt = sub.name;
+                cardImgDiv.appendChild(img);
+
+                const nomeSpan = document.createElement('span');
+                nomeSpan.className = 'card-name';
+                nomeSpan.textContent = sub.name;
+
+                card.appendChild(cardImgDiv);
+                card.appendChild(nomeSpan);
+
+                // evento de clique
+                card.addEventListener('click', () => {
+                    // tirar selected de todos
+                    document.querySelectorAll('.tech-card').forEach(c => c.classList.remove('selected-card'));
+                    card.classList.add('selected-card');
+
+                    // atualizar showcase
+                    imgGrande.src = criarSvgFinalizacao(sub.name, sub.bg);
+                    titulo.textContent = sub.name;
+                    texto.textContent = sub.detail;
+                    dica.textContent = sub.hint;
+                });
+
+                track.appendChild(card);
+            });
+
+            // Garantir que o primeiro (Kata‑Gatame) apareça sincronizado (já estava no HTML estático, mas reforçamos)
+            const primeiraSub = submissions[0];
+            imgGrande.src = criarSvgFinalizacao(primeiraSub.name, primeiraSub.bg);
+            titulo.textContent = primeiraSub.name;
+            texto.textContent = primeiraSub.detail;
+            dica.textContent = primeiraSub.hint;
+        })();
+    </script>
+</body>
+</html>
