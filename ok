@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dojo Digital - Técnicas de Jiu-Jitsu</title>
+    <style>
+        :root {
+            --primary: #1a1a1a;
+            --accent: #d4af37; /* Dourado */
+            --text: #ffffff;
+            --bg: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--primary);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--accent);
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+        }
+
+        /* Seção de Destaque */
+        .featured-section {
+            display: flex;
+            gap: 30px;
+            background: var(--bg);
+            padding: 20px;
+            border-radius: 12px;
+            min-height: 350px;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .featured-image-container {
+            flex: 1;
+            max-width: 400px;
+        }
+
+        #main-img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 3px solid var(--accent);
+            object-fit: cover;
+        }
+
+        .description-container {
+            flex: 2;
+        }
+
+        .description-container h2 {
+            color: var(--accent);
+            margin-top: 0;
+        }
+
+        /* Carrossel */
+        .carousel-title {
+            margin-top: 50px;
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding: 20px 0;
+            scroll-behavior: smooth;
+        }
+
+        .carousel::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .carousel::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+
+        .card {
+            min-width: 180px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            opacity: 0.7;
+        }
+
+        .card:hover img {
+            opacity: 1;
+            border: 1px solid var(--accent);
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .featured-section {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>JIU-JITSU: ENCICLOPÉDIA DE FINALIZAÇÕES</h1>
+</header>
+
+<main>
+    <section class="featured-section">
+        <div class="featured-image-container">
+            <img id="main-img" src="https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=600&q=80" alt="Finalização">
+        </div>
+        <div class="description-container">
+            <h2 id="sub-title">Armlock (Chave de Braço)</h2>
+            <p id="sub-desc">O Armlock é uma das finalizações mais clássicas. Consiste em isolar o braço do oponente entre suas pernas, mantendo o polegar dele voltado para cima, e elevar o quadril para aplicar pressão na articulação do cotovelo.</p>
+        </div>
+    </section>
+
+    <h3 class="carousel-title">Selecione uma técnica:</h3>
+
+    <div class="carousel" id="carousel">
+        <div class="card" onclick="updateFeatured('Armlock', 'Isole o braço, passe a perna sobre o rosto e eleve o quadril.', 'https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=600&q=80')">
+            <img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=200&q=80" alt="Armlock">
+            <p>Armlock</p>
+        </div>
+
+        <div class="card" onclick="updateFeatured('Triângulo', 'Prenda o pescoço e um braço do oponente entre suas pernas, fechando um triângulo com os joelhos.', 'https://images.unsplash.com/photo-1517438322351-e0749a370002?auto=format&fit=crop&w=600&q=80')">
+            <img src="https://images.unsplash.com/photo-1517438322351-e0749a370002?auto=format&fit=crop&w=200&q=80" alt="Triângulo">
+            <p>Triângulo</p>
+        </div>
+
+        <div class="card" onclick="updateFeatured('Mata-Leão', 'Passe o braço em volta do pescoço pelas costas, segurando o próprio bíceps e fechando o cadeado.', 'https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=600&q=80')">
+            <img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=200&q=80" alt="Mata Leão">
+            <p>Mata-Leão</p>
+        </div>
+
+        <div class="card" onclick="updateFeatured('Kimura', 'Segure o pulso do oponente e entrelace seu braço para criar uma alavanca no ombro dele.', 'https://images.unsplash.com/photo-1525477351113-6058e0892789?auto=format&fit=crop&w=600&q=80')">
+            <img src="https://images.unsplash.com/photo-1525477351113-6058e0892789?auto=format&fit=crop&w=200&q=80" alt="Kimura">
+            <p>Kimura</p>
+        </div>
+
+        <div class="card" onclick="updateFeatured('Guilhotina', 'Envolva o pescoço do oponente enquanto ele tenta uma queda e puxe para cima fechando a guarda.', 'https://images.unsplash.com/photo-1552072805-2a9039d00e57?auto=format&fit=crop&w=600&q=80')">
+            <img src="https://images.unsplash.com/photo-1552072805-2a9039d00e57?auto=format&fit=crop&w=200&q=80" alt="Guilhotina">
+            <p>Guilhotina</p>
+        </div>
+    </div>
+</main>
+
+<script>
+    function updateFeatured(title, description, imgSrc) {
+        document.getElementById('sub-title').innerText = title;
+        document.getElementById('sub-desc').innerText = description;
+        document.getElementById('main-img').src = imgSrc;
+    }
+</script>
+
+</body>
+</html>
